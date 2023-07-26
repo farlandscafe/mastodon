@@ -40,7 +40,7 @@ export default class NavigationBar extends ImmutablePureComponent {
 
         <div className='navigation-bar__profile'>
           <Permalink className='acct' href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>
-            <strong dangerouslySetInnerHTML={displayNameHtml} /> {badge} <span>@{this.props.account.get('acct')}</span>
+            <strong dangerouslySetInnerHTML={displayNameHtml} /> {badge} <span style={{fontWeight: 400}}>@{this.props.account.get('acct')}</span>
           </Permalink>
 
           { profileLink !== undefined && (
