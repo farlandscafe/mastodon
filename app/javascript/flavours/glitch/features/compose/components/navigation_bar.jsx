@@ -19,6 +19,18 @@ export default class NavigationBar extends ImmutablePureComponent {
   };
 
   render () {
+    const displayNameHtml = { __html: this.props.account.get('display_name_html') };
+
+    let badge;
+
+    if (this.props.account.get('bot')) {
+      badge = (<div className='account-role bot'><FormattedMessage id='account.badges.bot' defaultMessage='Automated' /></div>);
+    } else if (this.props.account.get('group')) {
+      badge = (<div className='account-role group'><FormattedMessage id='account.badges.group' defaultMessage='Group' /></div>);
+    } else {
+      badge = null;
+    }
+
     return (
       <div className='navigation-bar'>
         <Permalink className='avatar' href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>
@@ -27,6 +39,9 @@ export default class NavigationBar extends ImmutablePureComponent {
         </Permalink>
 
         <div className='navigation-bar__profile'>
+          <Permalink className='acct' href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>
+            <span dangerouslySetInnerHTML={displayNameHtml} /> {badge}
+          </Permalink>
           <Permalink className='acct' href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>
             <strong>@{this.props.account.get('acct')}</strong>
           </Permalink>
