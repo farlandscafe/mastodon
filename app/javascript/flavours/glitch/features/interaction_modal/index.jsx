@@ -11,8 +11,8 @@ import { throttle, escapeRegExp } from 'lodash';
 
 import { openModal, closeModal } from 'flavours/glitch/actions/modal';
 import api from 'flavours/glitch/api';
-import Button from 'flavours/glitch/components/button';
-import { Icon } from 'flavours/glitch/components/icon';
+import { Button } from 'flavours/glitch/components/button';
+import { Icon }  from 'flavours/glitch/components/icon';
 import { registrationsOpen, sso_redirect } from 'flavours/glitch/initial_state';
 
 const messages = defineMessages({
@@ -27,14 +27,14 @@ const mapStateToProps = (state, { accountId }) => ({
 const mapDispatchToProps = (dispatch) => ({
   onSignupClick() {
     dispatch(closeModal({
-        modalType: undefined,
-        ignoreFocus: false,
-      }));
+      modalType: undefined,
+      ignoreFocus: false,
+    }));
     dispatch(openModal({ modalType: 'CLOSED_REGISTRATIONS' }));
   },
 });
 
-const PERSISTENCE_KEY = 'flavours/glitch_home';
+const PERSISTENCE_KEY = 'mastodon_home';
 
 const isValidDomain = value => {
   const url = new URL('https:///path');
@@ -187,7 +187,7 @@ class LoginForm extends React.PureComponent {
 
   setIFrameRef = (iframe) => {
     this.iframeRef = iframe;
-  }
+  };
 
   handleFocus = () => {
     this.setState({ expanded: true });
@@ -294,9 +294,9 @@ class LoginForm extends React.PureComponent {
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
             onKeyDown={this.handleKeyDown}
-            autocomplete='off'
-            autocapitalize='off'
-            spellcheck='false'
+            autoComplete='off'
+            autoCapitalize='off'
+            spellCheck='false'
           />
 
           <Button onClick={this.handleSubmit} disabled={isSubmitting || error}><FormattedMessage id='interaction_modal.login.action' defaultMessage='Take me home' /></Button>

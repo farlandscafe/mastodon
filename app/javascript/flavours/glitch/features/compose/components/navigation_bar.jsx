@@ -5,17 +5,19 @@ import { FormattedMessage } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { Avatar } from 'flavours/glitch/components/avatar';
 import Permalink from 'flavours/glitch/components/permalink';
 import { profileLink } from 'flavours/glitch/utils/backend_links';
+
+import { Avatar } from '../../../components/avatar';
 
 import ActionBar from './action_bar';
 
 export default class NavigationBar extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     onLogout: PropTypes.func.isRequired,
+    onClose: PropTypes.func,
   };
 
   render () {
@@ -31,17 +33,21 @@ export default class NavigationBar extends ImmutablePureComponent {
       badge = null;
     }
 
+    const username = this.props.account.get('acct');
+
     return (
       <div className='navigation-bar'>
-        <Permalink className='avatar' href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>
-          <span style={{ display: 'none' }}>{this.props.account.get('acct')}</span>
-          <Avatar account={this.props.account} size={48} />
+        <Permalink className='avatar' href={this.props.account.get('url')} to={`/@${username}`}>
+          <span style={{ display: 'none' }}>{username}</span>
+          <Avatar account={this.props.account} size={46} />
         </Permalink>
 
         <div className='navigation-bar__profile'>
-          <Permalink className='acct' href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>
-            <strong dangerouslySetInnerHTML={displayNameHtml} /> {badge} <span style={{ fontWeight: 400, color: '#c2cede' }}>@{this.props.account.get('acct')}</span>
+          <span>
+          <Permalink className='acct' href={this.props.account.get('url')} to={`/@${username}`}>
+            <strong dangerouslySetInnerHTML={displayNameHtml} /> {badge} <span style={{ fontWeight: 400, color: '#c2cede' }}>@{username}</span>
           </Permalink>
+          </span>
 
           { profileLink !== undefined && (
             <a

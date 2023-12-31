@@ -66,23 +66,24 @@ class Account < ApplicationRecord
   BACKGROUND_REFRESH_INTERVAL = 1.week.freeze
 
   USERNAME_RE   = /[a-z0-9_]+([a-z0-9_.-]+[a-z0-9_]+)?/i
-  MENTION_RE    = %r{(?<=^|[^/[:word:]])@((#{USERNAME_RE})(?:@[[:word:].-]+[[:word:]]+)?)}i
+  MENTION_RE    = %r{(?<![=/[:word:]])@((#{USERNAME_RE})(?:@[[:word:].-]+[[:word:]]+)?)}i
   URL_PREFIX_RE = %r{\Ahttp(s?)://[^/]+}
   USERNAME_ONLY_RE = /\A#{USERNAME_RE}\z/i
 
-  include Attachmentable
-  include AccountAssociations
-  include AccountAvatar
-  include AccountFinderConcern
-  include AccountHeader
-  include AccountInteractions
-  include Paginable
-  include AccountCounters
-  include DomainNormalizable
+  include Attachmentable # Load prior to Avatar & Header concerns
+
+  include Account::Associations
+  include Account::Avatar
+  include Account::Counters
+  include Account::FinderConcern
+  include Account::Header
+  include Account::Interactions
+  include Account::Merging
+  include Account::Search
+  include Account::StatusesSearch
   include DomainMaterializable
-  include AccountMerging
-  include AccountSearch
-  include AccountStatusesSearch
+  include DomainNormalizable
+  include Paginable
 
   MAX_DISPLAY_NAME_LENGTH = (ENV['MAX_DISPLAY_NAME_CHARS'] || 30).to_i
   MAX_NOTE_LENGTH = (ENV['MAX_BIO_CHARS'] || 500).to_i
@@ -131,7 +132,7 @@ class Account < ApplicationRecord
   scope :searchable, -> { without_unapproved.without_suspended.where(moved_to_account_id: nil) }
   scope :discoverable, -> { searchable.without_silenced.where(discoverable: true).joins(:account_stat) }
   scope :followable_by, ->(account) { joins(arel_table.join(Follow.arel_table, Arel::Nodes::OuterJoin).on(arel_table[:id].eq(Follow.arel_table[:target_account_id]).and(Follow.arel_table[:account_id].eq(account.id))).join_sources).where(Follow.arel_table[:id].eq(nil)).joins(arel_table.join(FollowRequest.arel_table, Arel::Nodes::OuterJoin).on(arel_table[:id].eq(FollowRequest.arel_table[:target_account_id]).and(FollowRequest.arel_table[:account_id].eq(account.id))).join_sources).where(FollowRequest.arel_table[:id].eq(nil)) }
-  scope :by_recent_status, -> { order(Arel.sql('account_stats.last_status_at DESC NULLS LAST')) }
+  scope :by_recent_status, -> { includes(:account_stat).merge(AccountStat.order('last_status_at DESC NULLS LAST')).references(:account_stat) }
   scope :by_recent_sign_in, -> { order(Arel.sql('users.current_sign_in_at DESC NULLS LAST')) }
   scope :popular, -> { order('account_stats.followers_count desc') }
   scope :by_domain_and_subdomains, ->(domain) { where(domain: Instance.by_domain_and_subdomains(domain).select(:domain)) }
@@ -249,6 +250,9 @@ class Account < ApplicationRecord
   def suspended_temporarily?
     suspended? && deletion_request.present?
   end
+
+  alias unavailable? suspended?
+  alias permanently_unavailable? suspended_permanently?
 
   def suspend!(date: Time.now.utc, origin: :local, block_email: true)
     transaction do
@@ -451,8 +455,8 @@ class Account < ApplicationRecord
     end
 
     def inverse_alias(key, original_key)
-      define_method("#{key}=") do |value|
-        public_send("#{original_key}=", !ActiveModel::Type::Boolean.new.cast(value))
+      define_method(:"#{key}=") do |value|
+        public_send(:"#{original_key}=", !ActiveModel::Type::Boolean.new.cast(value))
       end
 
       define_method(key) do
