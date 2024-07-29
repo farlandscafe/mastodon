@@ -223,6 +223,7 @@ ko:
         update_custom_emoji: 커스텀 에모지 업데이트
         update_domain_block: 도메인 차단 갱신
         update_ip_block: IP 규칙 수정
+        update_report: 신고 업데이트
         update_status: 게시물 수정
         update_user_role: 역할 수정
       actions:
@@ -282,6 +283,7 @@ ko:
         update_custom_emoji_html: "%{name} 님이 에모지 %{target}를 업데이트 했습니다"
         update_domain_block_html: "%{name} 님이 %{target}에 대한 도메인 차단을 갱신했습니다"
         update_ip_block_html: "%{name} 님이 IP 규칙 %{target}을 수정했습니다"
+        update_report_html: "%{name} 님이 신고 %{target}를 업데이트 했습니다"
         update_status_html: "%{name} 님이 %{target}의 게시물을 업데이트했습니다"
         update_user_role_html: "%{name} 님이 %{target} 역할을 수정했습니다"
       deleted_account: 계정을 삭제했습니다
@@ -289,6 +291,7 @@ ko:
       filter_by_action: 행동으로 거르기
       filter_by_user: 사용자로 거르기
       title: 감사 로그
+      unavailable_instance: "(도메인네임 사용불가)"
     announcements:
       destroyed_msg: 공지가 성공적으로 삭제되었습니다!
       edit:
@@ -462,6 +465,9 @@ ko:
       title: 팔로우 추천
       unsuppress: 팔로우 추천 복원
     instances:
+      audit_log:
+        title: 최근 감사 기록
+        view_all: 감사 기록 전체 보기
       availability:
         description_html:
           other: 도메인에 대한 전달이 성공 없이 <strong>%{count}</strong>일 실패한다면, 이후의 전달 시도는 해당 도메인<em>에서</em> 전달이 오기 전까지는 만들어지지 않습니다.
@@ -935,7 +941,7 @@ ko:
       delete: 삭제
       edit_preset: 경고 프리셋 편집
       empty: 아직 어떤 경고 틀도 정의되지 않았습니다.
-      title: 경고 틀 관리
+      title: 경고 프리셋
     webhooks:
       add_new: 엔드포인트 추가
       delete: 삭제
@@ -1739,7 +1745,7 @@ ko:
     contrast: 마스토돈 (고대비)
     default: 마스토돈 (어두움)
     mastodon-light: 마스토돈 (밝음)
-    system: 자동 선택 (시스템 테마 이용)
+    system: 자동 (시스템 테마 사용)
   time:
     formats:
       default: "%Y-%m-%d %H:%M"

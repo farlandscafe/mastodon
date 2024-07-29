@@ -226,6 +226,7 @@ sq:
         update_custom_emoji: Përditëso Emoxhi Vetjake
         update_domain_block: Përditëso Bllok Përkatësish
         update_ip_block: Përditësoni rregull IP
+        update_report: Përditësoni Raportimin
         update_status: Përditëso Gjendjen
         update_user_role: Përditësoni Rol
       actions:
@@ -285,6 +286,7 @@ sq:
         update_custom_emoji_html: "%{name} përditësoi emoxhin %{target}"
         update_domain_block_html: "%{name} përditësoi bllokim përkatësish për %{target}"
         update_ip_block_html: "%{name} ndryshoi rregull për IP-në %{target}"
+        update_report_html: "%{name} përditësoi raportimin %{target}"
         update_status_html: "%{name} përditësoi gjendjen me %{target}"
         update_user_role_html: "%{name} ndryshoi rolin për %{target}"
       deleted_account: fshiu llogarinë
@@ -468,6 +470,9 @@ sq:
       title: Rekomandime ndjekjeje
       unsuppress: Rikthe rekomandime ndjekjeje
     instances:
+      audit_log:
+        title: Regjistra Auditimesh Së Fundi
+        view_all: Shihni regjistra të plotë auditimesh
       availability:
         description_html:
           one: Nëse dhënia e mesazheve te përkatësia dështon për <strong>%{count} ditë</strong> pa sukses, s’do të bëhen përpjekje të tjera për dhënie, veç në u marrtë një dërgim <em>prej</em> përkatësisë.
@@ -946,7 +951,7 @@ sq:
       delete: Fshije
       edit_preset: Përpunoni sinjalizim të paracaktuar
       empty: S’keni përcaktuar ende sinjalizime të gatshme.
-      title: Administroni sinjalizime të paracaktuara
+      title: Paracaktime sinjalizimesh
     webhooks:
       add_new: Shtoni pikëmbarim
       delete: Fshije
