@@ -19,6 +19,7 @@ import {
   InteractionModal,
   SubscribedLanguagesModal,
   ClosedRegistrationsModal,
+  IgnoreNotificationsModal,
 } from 'flavours/glitch/features/ui/util/async-components';
 import { getScrollbarWidth } from 'flavours/glitch/utils/scrollbar';
 
@@ -40,7 +41,7 @@ import {
 } from './confirmation_modals';
 import DeprecatedSettingsModal from './deprecated_settings_modal';
 import DoodleModal from './doodle_modal';
-import FavouriteModal from './favourite_modal';
+import { FavouriteModal } from './favourite_modal';
 import FocalPointModal from './focal_point_modal';
 import ImageModal from './image_modal';
 import MediaModal from './media_modal';
@@ -80,6 +81,7 @@ export const MODAL_COMPONENTS = {
   'SUBSCRIBED_LANGUAGES': SubscribedLanguagesModal,
   'INTERACTION': InteractionModal,
   'CLOSED_REGISTRATIONS': ClosedRegistrationsModal,
+  'IGNORE_NOTIFICATIONS': IgnoreNotificationsModal,
 };
 
 export default class ModalRoot extends PureComponent {
