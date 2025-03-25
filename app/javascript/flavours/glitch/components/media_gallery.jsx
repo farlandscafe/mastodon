@@ -39,6 +39,7 @@ class Item extends PureComponent {
 
   state = {
     loaded: false,
+    error: false,
   };
 
   handleMouseEnter = (e) => {
@@ -82,6 +83,10 @@ class Item extends PureComponent {
     this.setState({ loaded: true });
   };
 
+  handleImageError = () => {
+    this.setState({ error: true });
+  };
+
   render () {
     const { attachment, lang, index, size, standalone, letterbox, displayWidth, visible } = this.props;
 
@@ -107,7 +112,7 @@ class Item extends PureComponent {
     if (attachment.get('type') === 'unknown') {
       return (
         <div className={classNames('media-gallery__item', { standalone, 'media-gallery__item--tall': height === 100, 'media-gallery__item--wide': width === 100 })} key={attachment.get('id')}>
-          <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url') || attachment.get('url')} style={{ cursor: 'pointer' }} title={description} lang={lang} target='_blank' rel='noopener noreferrer'>
+          <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url') || attachment.get('url')} style={{ cursor: 'pointer' }} title={description} lang={lang} target='_blank' rel='noopener'>
             <Blurhash
               hash={attachment.get('blurhash')}
               className='media-gallery__preview'
@@ -139,7 +144,7 @@ class Item extends PureComponent {
           href={attachment.get('remote_url') || originalUrl}
           onClick={this.handleClick}
           target='_blank'
-          rel='noopener noreferrer'
+          rel='noopener'
         >
           <img
             className={letterbox ? 'letterbox' : null}
@@ -147,10 +152,10 @@ class Item extends PureComponent {
             srcSet={srcSet}
             sizes={sizes}
             alt={description}
-            title={description}
             lang={lang}
             style={{ objectPosition: letterbox ? null : `${x}% ${y}%` }}
             onLoad={this.handleImageLoad}
+            onError={this.handleImageError}
           />
         </a>
       );
@@ -169,7 +174,6 @@ class Item extends PureComponent {
           <video
             className={`media-gallery__item-gifv-thumbnail${letterbox ? ' letterbox' : ''}`}
             aria-label={description}
-            title={description}
             lang={lang}
             role='application'
             src={attachment.get('url')}
@@ -187,7 +191,7 @@ class Item extends PureComponent {
     }
 
     return (
-      <div className={classNames('media-gallery__item', { standalone, letterbox, 'media-gallery__item--tall': height === 100, 'media-gallery__item--wide': width === 100 })} key={attachment.get('id')}>
+      <div className={classNames('media-gallery__item', { standalone, letterbox, 'media-gallery__item--error': this.state.error, 'media-gallery__item--tall': height === 100, 'media-gallery__item--wide': width === 100 })} key={attachment.get('id')}>
         <Blurhash
           hash={attachment.get('blurhash')}
           dummy={!useBlurhash}
